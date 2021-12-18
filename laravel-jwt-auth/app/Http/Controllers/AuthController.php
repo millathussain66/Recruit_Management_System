@@ -1,10 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Http\Request;
 
+use App\Jobs\VerifyUserJobs;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Illuminate\Support\Facades\Crypt;
+
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Validator;
 
@@ -27,7 +31,7 @@ class AuthController extends Controller
      */
     public function login(Request $request){
     	$validator = Validator::make($request->all(), [
-            
+
             'email' => 'required|email',
             'password' => 'required|string|min:6',
         ]);
@@ -61,8 +65,15 @@ class AuthController extends Controller
 
         $user = User::create(array_merge(
                     $validator->validated(),
-                    ['password' => bcrypt($request->password)]
+            ['password' => bcrypt($request->password),'slug'=>Str::random(15),'token'=>Str::random(20),'status'=>'active']
                 ));
+
+        if($user){
+
+          $details = ['name'=>$user->name,'email'=>$user->email,'token'=>$user->token];
+           dispatch(new VerifyUserJobs($details));
+
+        }
 
         return response()->json([
             'message' => 'User successfully registered',
