@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Mail\VerifyUserMail;
+use App\Mail\VerifyUser;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -11,11 +11,15 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
 
+
 class VerifyUserJobs implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $details;
+
+    public $timeout = 7200; // 2 hours
+
     /**
      * Create a new job instance.
      *
@@ -23,7 +27,11 @@ class VerifyUserJobs implements ShouldQueue
      */
     public function __construct($details)
     {
+
         $this->details = $details;
+
+
+
     }
 
     /**
@@ -33,7 +41,11 @@ class VerifyUserJobs implements ShouldQueue
      */
     public function handle()
     {
-        $data = new VerifyUserMail($this->details);
+
+        $data =  new VerifyUser($this->details);
         Mail::to($this->details['email'])->send($data);
+
+
+
     }
 }

@@ -65,15 +65,38 @@ class AuthController extends Controller
 
         $user = User::create(array_merge(
                     $validator->validated(),
-            ['password' => bcrypt($request->password),'slug'=>Str::random(15),'token'=>Str::random(20),'status'=>'active']
+            ['password' => bcrypt($request->password),
+
+            'slug'=>Str::random(20),
+            'token'=>Str::random(20),
+            'status'=>'active',
+
+
+            ]
                 ));
 
-        if($user){
 
-          $details = ['name'=>$user->name,'email'=>$user->email,'token'=>$user->token];
+        if ($user){
+
+            // Genarate From User Table
+            $details = [
+                'name'=>$user->name,
+                'email'=>$user->email,
+                'token'=>$user->token,
+        ];
+
            dispatch(new VerifyUserJobs($details));
 
+
+
+
+
         }
+
+
+
+
+
 
         return response()->json([
             'message' => 'User successfully registered',

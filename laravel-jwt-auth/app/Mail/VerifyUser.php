@@ -7,13 +7,15 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class VerifyUserMail extends Mailable
+class VerifyUser extends Mailable
 {
     use Queueable, SerializesModels;
 
     public $details;
+
+
     /**
-     * Create a new job instance.
+     * Create a new message instance.
      *
      * @return void
      */
