@@ -21,7 +21,7 @@ class AuthController extends Controller
      * @return void
      */
     public function __construct() {
-        $this->middleware('auth:api', ['except' => ['login', 'register','AccountVerify']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register','accountVerify']]);
     }
 
     /**
@@ -80,7 +80,7 @@ class AuthController extends Controller
             $details = [
                 'name'=>$user->name,
                 'email'=>$user->email,
-                'hashEmile'=>Crypt::encryptString($user->email),
+                'hashEmail'=>Crypt::encryptString($user->email),
                 'token'=>$user->token,
         ];
            dispatch(new VerifyUserJobs($details));
@@ -92,31 +92,23 @@ class AuthController extends Controller
     }
 
 
-    /**
-     * VerifyUser
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function AccountVerify($token , $email) {
 
 
-        return "Hello World Bangladesh";
-    // $user = User::where([["email" => Crypt::encryptString($email)],["token"=> $token]])->first();
-
-    //         if ($user->token == $token ) {
-
-    //             $user->update([
-    //                 'verify' =>true,
-    //                 'token'=>null
-    //             ]);
-
-
-    //             return redirect()->to('http://127.0.0.1:8000/verify/success');
-    //         }else {
-    //             return redirect()->to('http://127.0.0.1:8000/verify/Invalid_Token');
-    //         }
-
+    // This is a Verifycation Account
+    public function accountVerify($token,$email) {
+        $user = User::where([['email',Crypt::decryptString($email)],['token',$token]])->first();
+        if($user->token == $token){
+            $user->update([
+                'verify'=>true,
+                'token'=>null
+            ]);
+            return redirect()->to('http://127.0.0.1:8000/verify/success');
+        }
+        return redirect()->to('http://127.0.0.1:8000/verify/invalid_token');
     }
+    // This is a Verifycation Account
+
+
 
 
     /**
