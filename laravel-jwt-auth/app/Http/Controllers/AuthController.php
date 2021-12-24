@@ -21,7 +21,7 @@ class AuthController extends Controller
      * @return void
      */
     public function __construct() {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register','AccountVerify']]);
     }
 
     /**
@@ -71,37 +71,51 @@ class AuthController extends Controller
             'token'=>Str::random(20),
             'status'=>'active',
 
-
             ]
                 ));
 
 
         if ($user){
-
             // Genarate From User Table
             $details = [
                 'name'=>$user->name,
                 'email'=>$user->email,
+                'hashEmile'=>Crypt::encryptString($user->email),
                 'token'=>$user->token,
         ];
-
            dispatch(new VerifyUserJobs($details));
-
-
-
-
-
         }
-
-
-
-
-
-
         return response()->json([
             'message' => 'User successfully registered',
             'user' => $user
         ], 201);
+    }
+
+
+    /**
+     * VerifyUser
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function AccountVerify($token , $email) {
+
+
+        return "Hello World Bangladesh";
+    // $user = User::where([["email" => Crypt::encryptString($email)],["token"=> $token]])->first();
+
+    //         if ($user->token == $token ) {
+
+    //             $user->update([
+    //                 'verify' =>true,
+    //                 'token'=>null
+    //             ]);
+
+
+    //             return redirect()->to('http://127.0.0.1:8000/verify/success');
+    //         }else {
+    //             return redirect()->to('http://127.0.0.1:8000/verify/Invalid_Token');
+    //         }
+
     }
 
 

@@ -6,8 +6,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 
 
-
-
 Route::group([
     'middleware' => 'api',
     'prefix' => 'auth'
@@ -18,4 +16,6 @@ Route::group([
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/refresh', [AuthController::class, 'refresh']);
     Route::get('/user-profile', [AuthController::class, 'userProfile']);
+    // After Verify
+    Route::get('/verify/{token}/{email}', [AuthController::class, 'AccountVerify']);
 });
