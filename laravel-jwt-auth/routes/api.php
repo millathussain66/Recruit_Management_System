@@ -17,7 +17,14 @@ Route::group([
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/refresh', [AuthController::class, 'refresh']);
     Route::get('/user-profile', [AuthController::class, 'userProfile']);
-    // After Verify
-    Route::get('/verify/{token}/{email}', [AuthController::class, 'accountVerify']);
+
+    // Verify User
+
+
+
+
+
+
+
 
 });

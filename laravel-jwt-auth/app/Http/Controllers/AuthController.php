@@ -21,7 +21,7 @@ class AuthController extends Controller
      * @return void
      */
     public function __construct() {
-        $this->middleware('auth:api', ['except' => ['login', 'register','accountVerify']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register','accountVerity']]);
     }
 
     /**
@@ -91,26 +91,6 @@ class AuthController extends Controller
         ], 201);
     }
 
-
-
-
-    // This is a Verifycation Account
-    public function accountVerify($token,$email) {
-        $user = User::where([['email',Crypt::decryptString($email)],['token',$token]])->first();
-        if($user->token == $token){
-            $user->update([
-                'verify'=>true,
-                'token'=>null
-            ]);
-            return redirect()->to('http://127.0.0.1:8000/verify/success');
-        }
-        return redirect()->to('http://127.0.0.1:8000/verify/invalid_token');
-    }
-    // This is a Verifycation Account
-
-
-
-
     /**
      * Log the user out (Invalidate the token).
      *
@@ -155,5 +135,6 @@ class AuthController extends Controller
             'user' => auth()->user()
         ]);
     }
+
 
 }
