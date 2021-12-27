@@ -20,6 +20,10 @@ Route::group([
 
     // Verify User
 
+    Route::get('/verify/{token}/{email}', [AuthController::class, 'accountVerify']);
+
+
+
 
 
 

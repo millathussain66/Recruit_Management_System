@@ -21,7 +21,7 @@ class AuthController extends Controller
      * @return void
      */
     public function __construct() {
-        $this->middleware('auth:api', ['except' => ['login', 'register','accountVerity']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register','accountVerify']]);
     }
 
     /**
@@ -90,6 +90,30 @@ class AuthController extends Controller
             'user' => $user
         ], 201);
     }
+
+
+        /**
+     * Log the user out (Invalidate the token).
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function accountVerify($token,$email)
+
+    {
+        $user = User::where([['email',Crypt::decryptString($email)],['token',$token]])->first();
+        if($user->token == $token){
+            $user->update([
+                'verify'=>true,
+                'token'=>null
+            ]);
+            return redirect()->to('http://127.0.0.1:8000/verify/success');
+        }
+        return redirect()->to('http://127.0.0.1:8000/verify/invalid_token');
+
+    }
+
+
+
 
     /**
      * Log the user out (Invalidate the token).
