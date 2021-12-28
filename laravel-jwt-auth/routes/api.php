@@ -17,10 +17,10 @@ Route::group([
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/refresh', [AuthController::class, 'refresh']);
     Route::get('/user-profile', [AuthController::class, 'userProfile']);
-
     // Verify User
-
     Route::get('/verify/{token}/{email}', [AuthController::class, 'accountVerify']);
+    // Forgot password
+    Route::get('/forgot-password', [AuthController::class, 'forgotPassword']);
 
 
 
