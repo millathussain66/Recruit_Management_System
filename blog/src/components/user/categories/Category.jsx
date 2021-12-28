@@ -2,11 +2,11 @@ import React from 'react'
 
 const Category = () => {
     return (
-        <div className=''>
+        <div className='test'>
 
             Catagroy Page
 
-            <h1 className='test'>Hello World</h1>
+        
             
         </div>
     )
