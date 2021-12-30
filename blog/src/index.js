@@ -9,9 +9,6 @@ import Jobs from './components/user/jobs/Jobs';
 
 import './assets/style/main.scss';
 
-
-
-
 ReactDOM.render(
   <React.StrictMode>
     <App />
